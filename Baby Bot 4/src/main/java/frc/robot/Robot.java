@@ -25,10 +25,11 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
     
-  private CANSparkMax motor3 = new CANSparkMax(1, MotorType.kBrushless);
+  
+
 
   /**
-   * This function is run when the robot is first started up and should be used for any
+   * This function is run when the robot s first started up and should be used for any
    * initialization code.
    */
   @Override
@@ -52,7 +53,7 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-      System.out.println("Test");
+
 
   }
 
@@ -95,9 +96,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {
-          motor3.set(.5);
-  }
+  public void teleopPeriodic() {}
+
+  
   
   @Override
   public void testInit() {
