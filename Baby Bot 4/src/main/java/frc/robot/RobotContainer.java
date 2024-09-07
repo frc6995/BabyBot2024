@@ -7,8 +7,11 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
+
 import frc.robot.subsystems.DrivebaseS;
 import frc.robot.subsystems.pneumatics.PnuematicsS;
+import frc.robot.subsystems.pneumatics.Pnuematics2S;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -25,15 +28,20 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DrivebaseS m_drivebaseS = new DrivebaseS();
   private final PnuematicsS m_pneumatics = new PnuematicsS();
+   private final Pnuematics2S m_pneumatics2 = new Pnuematics2S();
+  
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
+  
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
+
   }
 
   /**
@@ -47,9 +55,15 @@ public class RobotContainer {
    */
   private void configureBindings() {
     m_drivebaseS.setDefaultCommand(m_drivebaseS.driveC(()->{
-      return new ChassisSpeeds(m_driverController.getRightY(), m_driverController.getLeftX(), m_driverController.getRightX());
+      return new ChassisSpeeds(
+        MathUtil.applyDeadband (-m_driverController.getLeftY(), 0.2), 
+        MathUtil.applyDeadband(m_driverController.getRightX(), 0.2), 
+        MathUtil.applyDeadband(m_driverController.getLeftX(), 0.2));
     }));
-    m_driverController.a().onTrue(m_pneumatics.toggleC());
+    m_driverController.a().onTrue(m_pneumatics.extendC()).onFalse(m_pneumatics.retractC());
+    m_driverController.x().onTrue(m_pneumatics2.extendC()).onFalse(m_pneumatics2.retractC());
+
+    m_driverController.b().onTrue(m_drivebaseS.ToggleFastC()).onFalse(m_drivebaseS.ToggleFastC());
   }
 
   /**
@@ -61,4 +75,9 @@ public class RobotContainer {
     // An example command will be run in autonomous
     return Commands.none();
   }
+
+  public void onEnabled() {
+    
+  }
+
 }

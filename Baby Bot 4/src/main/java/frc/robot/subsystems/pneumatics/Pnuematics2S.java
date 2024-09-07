@@ -1,3 +1,4 @@
+
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
@@ -12,27 +13,27 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class PnuematicsS extends SubsystemBase {
+public class Pnuematics2S extends SubsystemBase {
   public class Constants{
   }
 
-  private final Solenoid m_solenoid = new Solenoid(PneumaticsModuleType.REVPH,3);
+  private final Solenoid m_solenoid2Solenoid = new Solenoid(PneumaticsModuleType.REVPH,2);
   private boolean isExtended = false;
 
   /** Creates a new PnueamticsS. */
-  public PnuematicsS() {
+  public Pnuematics2S() {
 
   }
 
   public void extend(){
     isExtended = true;
-    m_solenoid.set(true);
+    m_solenoid2Solenoid.set(true);
 
   } 
 
   public void retract(){
     isExtended = false;
-    m_solenoid.set(false);
+    m_solenoid2Solenoid.set(false);
   }
 
   public Command extendC(){
@@ -43,7 +44,7 @@ public class PnuematicsS extends SubsystemBase {
     return run(this::retract);
   }
   public void toggle(){
-    m_solenoid.toggle();
+    m_solenoid2Solenoid.toggle();
   }
 
   public Command toggleC() {

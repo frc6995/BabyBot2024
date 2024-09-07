@@ -10,20 +10,35 @@ import java.util.function.Supplier;
 
 import com.revrobotics.CANSparkMax;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+
+
 public class DrivebaseS extends SubsystemBase {
+
+  public boolean isBoosting = false;
 
   private CANSparkMax motorFL = new CANSparkMax(5, MotorType.kBrushless);
   private CANSparkMax motorBR = new CANSparkMax(4, MotorType.kBrushless);
   private CANSparkMax motorBL = new CANSparkMax(3, MotorType.kBrushless);
   private CANSparkMax motorFR = new CANSparkMax(2, MotorType.kBrushless);
+
+  private double slowSpeed = 3;
+  private double fastSpeed = 6;
+
+  private double SpeedMultiplier = slowSpeed;
+
+
 private MecanumDriveKinematics kinematics = new MecanumDriveKinematics(
   new Translation2d(
     Units.inchesToMeters(7.5),
@@ -47,10 +62,10 @@ private MecanumDriveKinematics kinematics = new MecanumDriveKinematics(
 
   public void drive (ChassisSpeeds Speeds) {
     MecanumDriveWheelSpeeds wheels = kinematics.toWheelSpeeds(Speeds);
-    motorFL.setVoltage(4* wheels.frontLeftMetersPerSecond);
-    motorFR.setVoltage(4* wheels.frontRightMetersPerSecond);
-    motorBL.setVoltage(4* wheels.rearLeftMetersPerSecond);
-    motorBR.setVoltage(4* wheels.rearRightMetersPerSecond);
+    motorFL.setVoltage(SpeedMultiplier* wheels.frontLeftMetersPerSecond);
+    motorFR.setVoltage(SpeedMultiplier* wheels.frontRightMetersPerSecond);
+    motorBL.setVoltage(SpeedMultiplier* wheels.rearLeftMetersPerSecond);
+    motorBR.setVoltage(SpeedMultiplier* wheels.rearRightMetersPerSecond);
   }
 
   public Command driveC (Supplier<ChassisSpeeds> Speeds) {
@@ -65,5 +80,43 @@ private MecanumDriveKinematics kinematics = new MecanumDriveKinematics(
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
+  
   }
+ public Command ToggleFastC() {
+      //if (!isBoosting) {
+        return Commands.sequence(Commands.runOnce(this::ToggleSpeed),
+        Commands.runOnce(this::ToggleSpeed),
+        Commands.runOnce(()-> isBoosting = true)).onlyIf(()->isBoosting);
+      //}
+      //else {
+        //return Commands.runOnce(()-> isBoosting = false);
+      //}
+
+      /*return Commands.sequence(Commands.sequence(Commands.runOnce(this::ToggleSpeed),
+        Commands.runOnce(this::ToggleSpeed),
+        Commands.runOnce(()-> isBoosting = true)).onlyIf(()->boosttimer.canBoost), 
+        );*/
+  }
+
+  public void ToggleSpeed() {
+      if (SpeedMultiplier == slowSpeed){
+        SpeedMultiplier = fastSpeed;
+      }
+      else{
+        SpeedMultiplier = slowSpeed;
+      }
+  }
+
+
+  public void ResetBoost() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'ResetBoost'");
+  }
+
 }
+
+
+
+
+ 
+  
