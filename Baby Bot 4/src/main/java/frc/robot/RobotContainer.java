@@ -60,7 +60,7 @@ public class RobotContainer {
     m_drivebaseS.setDefaultCommand(m_drivebaseS.driveC(()->{
       return new ChassisSpeeds(
         MathUtil.applyDeadband (-m_driverController.getLeftY(), 0.2), 
-        MathUtil.applyDeadband(m_driverController.getRightX(), 0.2), 
+        0.0, 
         MathUtil.applyDeadband((m_driverController.getLeftX() * 2), 0.2));
     }));
 
@@ -69,7 +69,8 @@ public class RobotContainer {
     m_operatorController.x().onTrue(m_pneumatics2.extendC()).onFalse(m_pneumatics2.retractC());
 
     m_operatorController.b().and(m_drivebaseS.trg_canBoost).onTrue(m_drivebaseS.ToggleFastC());
-    m_operatorController.y().onTrue(m_drivebaseS.ResetBoostC());
+   
+    // m_operatorController.y().onTrue(m_drivebaseS.ResetBoostC());
 
     /*
     //one controllers

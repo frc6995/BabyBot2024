@@ -8,6 +8,8 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import java.util.function.Supplier;
 
+import frc.robot.Constants.DriveConstants;
+
 import com.revrobotics.CANSparkMax;
 
 import java.util.Timer;
@@ -27,9 +29,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class DrivebaseS extends SubsystemBase {
 
-  public int maxBoosts = 1;
-  public int timesBoosted = 0;
-  public int boostTimeSeconds = 10;
+  public int maxBoosts = 2;
+  public int timesBoosted = 1;
+  public int boostTimeSeconds = 5;
 
   private CANSparkMax motorFL = new CANSparkMax(5, MotorType.kBrushless);
   private CANSparkMax motorBR = new CANSparkMax(4, MotorType.kBrushless);
@@ -60,7 +62,13 @@ private MecanumDriveKinematics kinematics = new MecanumDriveKinematics(
     Units.inchesToMeters(-6.5)));
 
   /** Creates a new ExampleSubsystem. */
-  public DrivebaseS() {}
+  public DrivebaseS() {
+    motorBL.setSmartCurrentLimit(DriveConstants.CURRENT_LIMIT);
+    motorFL.setSmartCurrentLimit(DriveConstants.CURRENT_LIMIT);
+    motorBR.setSmartCurrentLimit(DriveConstants.CURRENT_LIMIT);
+    motorBR.setSmartCurrentLimit(DriveConstants.CURRENT_LIMIT);
+
+  }
 
 
   public void drive (ChassisSpeeds Speeds) {
