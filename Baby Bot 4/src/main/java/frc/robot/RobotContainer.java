@@ -16,6 +16,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -34,6 +35,8 @@ public class RobotContainer {
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  private final CommandXboxController m_operatorController =
+      new CommandXboxController(OperatorConstants.kOperatorControllerPort);
 
   
 
@@ -58,12 +61,26 @@ public class RobotContainer {
       return new ChassisSpeeds(
         MathUtil.applyDeadband (-m_driverController.getLeftY(), 0.2), 
         MathUtil.applyDeadband(m_driverController.getRightX(), 0.2), 
-        MathUtil.applyDeadband(m_driverController.getLeftX(), 0.2));
+        MathUtil.applyDeadband((m_driverController.getLeftX() * 2), 0.2));
     }));
+
+    //two controllers
+    m_operatorController.a().onTrue(m_pneumatics.extendC()).onFalse(m_pneumatics.retractC());
+    m_operatorController.x().onTrue(m_pneumatics2.extendC()).onFalse(m_pneumatics2.retractC());
+
+    m_operatorController.b().and(m_drivebaseS.trg_canBoost).onTrue(m_drivebaseS.ToggleFastC());
+    m_operatorController.y().onTrue(m_drivebaseS.ResetBoostC());
+
+    /*
+    //one controllers
     m_driverController.a().onTrue(m_pneumatics.extendC()).onFalse(m_pneumatics.retractC());
     m_driverController.x().onTrue(m_pneumatics2.extendC()).onFalse(m_pneumatics2.retractC());
 
-    m_driverController.b().onTrue(m_drivebaseS.ToggleFastC()).onFalse(m_drivebaseS.ToggleFastC());
+    m_driverController.b().and(m_drivebaseS.trg_canBoost).onTrue(m_drivebaseS.ToggleFastC());
+    m_driverController.y().onTrue(m_drivebaseS.ResetBoostC()); 
+    */
+
+    RobotModeTriggers.disabled().onFalse(m_drivebaseS.ResetBoostC());
   }
 
   /**
