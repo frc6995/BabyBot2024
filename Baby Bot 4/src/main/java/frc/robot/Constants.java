@@ -17,4 +17,8 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
     public static final int kOperatorControllerPort = 1;
   }
+
+  public static class DriveConstants {
+    public static final int CURRENT_LIMIT = 50;
+  }
 }

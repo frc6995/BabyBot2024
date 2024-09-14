@@ -38,8 +38,8 @@ public class DrivebaseS extends SubsystemBase {
   private CANSparkMax motorBL = new CANSparkMax(3, MotorType.kBrushless);
   private CANSparkMax motorFR = new CANSparkMax(2, MotorType.kBrushless);
 
-  private double slowSpeed = 3.2;
-  private double fastSpeed = 6.3;
+  private double slowSpeed = 2.8;
+  private double fastSpeed = 7.1;
 
   private double SpeedMultiplier = slowSpeed;
 
