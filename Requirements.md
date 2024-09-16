@@ -77,4 +77,21 @@ For each sprayer installed on the system:
 #### Spraying only when Button and Enabled
 The sprayer shall be set to ON if and only if the corresponding Sprayer Button is true and the system is enabled. Otherwise it shall be set to OFF.
 
+## D. Development Constraints
+### Java WPILIB
+The system shall be implemented in WPILib Java.
+
+### Units
+The system shall be implemented using unit-aware coding practices, but not using WPILib's Measure feature for unit values.
+
+## A. Architecture
+
+### Command-based
+The system shall use the command-based architecture.
+
+### Constants
+Constant values shall be stored as static values in appropriate Constants classes.
+
+### Code Reuse
+Code duplication should be avoided where possible (i.e. in the use of multiple sprayers with similar behavior)
 
