@@ -16,12 +16,13 @@ public class PnuematicsS extends SubsystemBase {
   public class Constants{
   }
 
-  private final Solenoid m_solenoid = new Solenoid(PneumaticsModuleType.REVPH,3);
+  // TODO: don't construct this before the PneumaticsS constructor. 
+  private final Solenoid m_solenoid;// = new Solenoid(PneumaticsModuleType.REVPH,3);
   private boolean isExtended = false;
 
   /** Creates a new PnueamticsS. */
-  public PnuematicsS() {
-
+  public PnuematicsS(int channel) {
+    m_solenoid = new Solenoid(PneumaticsModuleType.REVPH, channel);
   }
 
   public void extend(){

@@ -29,9 +29,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DrivebaseS m_drivebaseS = new DrivebaseS();
-  private final PnuematicsS m_pneumatics = new PnuematicsS();
-  private final Pnuematics2S m_pneumatics2 = new Pnuematics2S();
-  private final Pnuematics3S m_pneumatics3 = new Pnuematics3S();
+  private final SprayerS m_sprayer30S = new SprayerS(SprayerConstants.CHANNEL_30);
+  private final SprayerS m_sprayer45S = new SprayerS(SprayerConstants.CHANNEL_45);
+  private final SprayerS m_sprayer60S = new SprayerS(SprayerConstants.CHANNEL_60);
   
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -65,11 +65,12 @@ public class RobotContainer {
         0.0, 
         MathUtil.applyDeadband((m_driverController.getLeftX() * 2), 0.2));
     }));
+    if ()
 
     //two controllers
-    m_operatorController.a().onTrue(m_pneumatics.extendC()).onFalse(m_pneumatics.retractC());
-    m_operatorController.x().onTrue(m_pneumatics2.extendC()).onFalse(m_pneumatics2.retractC());
-    m_operatorController.y().onTrue(m_pneumatics3.extendC()).onFalse(m_pneumatics3.retractC());
+    //m_operatorController.a().onTrue(m_pneumatics.extendC()).onFalse(m_pneumatics.retractC());
+    m_operatorController.x().whileTrue(m_sprayer30S.sprayStopC());
+    m_operatorController.y().whileTrue(m_sprayer60S.sprayStopC());
 
     m_operatorController.b().and(m_drivebaseS.trg_canBoost).onTrue(m_drivebaseS.ToggleFastC());
    
