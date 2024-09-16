@@ -5,10 +5,9 @@
 package frc.robot;
 
 import static frc.robot.Constants.*;
-import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
 
 import frc.robot.subsystems.DrivebaseS;
+import frc.robot.subsystems.SprayerS;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -28,11 +27,9 @@ public class RobotContainer {
   private final BoostTracker m_boostTracker = new BoostTracker();
   private final DrivebaseS m_drivebaseS = new DrivebaseS();
   private final SprayerS m_sprayer30S = new SprayerS(SprayerConstants.CHANNEL_30);
-  private final SprayerS m_sprayer45S = new SprayerS(SprayerConstants.CHANNEL_45);
+  //private final SprayerS m_sprayer45S = new SprayerS(SprayerConstants.CHANNEL_45);
   private final SprayerS m_sprayer60S = new SprayerS(SprayerConstants.CHANNEL_60);
   
-
-  // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
   private final CommandXboxController m_operatorController =
@@ -63,7 +60,6 @@ public class RobotContainer {
         0.0, 
         MathUtil.applyDeadband((m_driverController.getLeftX()), 0.2) * 2);
     }));
-    if ()
 
     //two controllers
     //m_operatorController.a().onTrue(m_pneumatics.extendC()).onFalse(m_pneumatics.retractC());
@@ -95,9 +91,4 @@ public class RobotContainer {
     // An example command will be run in autonomous
     return Commands.none();
   }
-
-  public void onEnabled() {
-    
-  }
-
 }
