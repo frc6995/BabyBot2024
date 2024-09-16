@@ -4,14 +4,11 @@
 
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
+import static frc.robot.Constants.*;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 
 import frc.robot.subsystems.DrivebaseS;
-import frc.robot.subsystems.pneumatics.PnuematicsS;
-import frc.robot.subsystems.pneumatics.Pnuematics2S;
-import frc.robot.subsystems.pneumatics.Pnuematics3S;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
