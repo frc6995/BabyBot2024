@@ -14,11 +14,6 @@ import frc.robot.Constants;
 
 public class SprayerS extends SubsystemBase {
 
-  public class SprayerConstants {
-    public static final int CHANNEL_30 = 3;
-    public static final int CHANNEL_45 = 2;
-    public static final int CHANNEL_60 = 4;
-  }
   // don't construct this before the SprayerS constructor. 
   private final Solenoid m_solenoid;
 
