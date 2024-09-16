@@ -61,23 +61,10 @@ public class RobotContainer {
         MathUtil.applyDeadband((m_driverController.getLeftX()), 0.2) * 2);
     }));
 
-    //two controllers
-    //m_operatorController.a().onTrue(m_pneumatics.extendC()).onFalse(m_pneumatics.retractC());
     m_operatorController.x().whileTrue(m_sprayer30S.sprayStopC());
     m_operatorController.y().whileTrue(m_sprayer60S.sprayStopC());
 
     m_operatorController.b().and(m_boostTracker.trg_canBoost).onTrue(m_boostTracker.startBoostC());
-   
-    // m_operatorController.y().onTrue(m_drivebaseS.ResetBoostC());
-
-    /*
-    //one controllers
-    m_driverController.a().onTrue(m_pneumatics.extendC()).onFalse(m_pneumatics.retractC());
-    m_driverController.x().onTrue(m_pneumatics2.extendC()).onFalse(m_pneumatics2.retractC());
-
-    m_driverController.b().and(m_drivebaseS.trg_canBoost).onTrue(m_drivebaseS.ToggleFastC());
-    m_driverController.y().onTrue(m_drivebaseS.ResetBoostC()); 
-    */
 
     RobotModeTriggers.disabled().onFalse(m_boostTracker.resetBoostC());
   }
