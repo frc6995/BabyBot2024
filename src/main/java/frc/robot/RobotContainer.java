@@ -4,14 +4,10 @@
 
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
+import static frc.robot.Constants.*;
 
 import frc.robot.subsystems.DrivebaseS;
-import frc.robot.subsystems.pneumatics.PnuematicsS;
-import frc.robot.subsystems.pneumatics.Pnuematics2S;
-import frc.robot.subsystems.pneumatics.Pnuematics3S;
+import frc.robot.subsystems.SprayerS;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -28,13 +24,12 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+  private final BoostTracker m_boostTracker = new BoostTracker();
   private final DrivebaseS m_drivebaseS = new DrivebaseS();
-  private final PnuematicsS m_pneumatics = new PnuematicsS();
-  private final Pnuematics2S m_pneumatics2 = new Pnuematics2S();
-  private final Pnuematics3S m_pneumatics3 = new Pnuematics3S();
+  private final SprayerS m_sprayer30S = new SprayerS(SprayerConstants.CHANNEL_30);
+  //private final SprayerS m_sprayer45S = new SprayerS(SprayerConstants.CHANNEL_45);
+  private final SprayerS m_sprayer60S = new SprayerS(SprayerConstants.CHANNEL_60);
   
-
-  // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
   private final CommandXboxController m_operatorController =
@@ -61,30 +56,17 @@ public class RobotContainer {
   private void configureBindings() {
     m_drivebaseS.setDefaultCommand(m_drivebaseS.driveC(()->{
       return new ChassisSpeeds(
-        MathUtil.applyDeadband (-m_driverController.getLeftY(), 0.2), 
+        MathUtil.applyDeadband (-m_driverController.getLeftY(), 0.2) * m_boostTracker.getTopSpeed(), 
         0.0, 
-        MathUtil.applyDeadband((m_driverController.getLeftX() * 2), 0.2));
+        MathUtil.applyDeadband((m_driverController.getLeftX()), 0.2) * 2);
     }));
 
-    //two controllers
-    m_operatorController.a().onTrue(m_pneumatics.extendC()).onFalse(m_pneumatics.retractC());
-    m_operatorController.x().onTrue(m_pneumatics2.extendC()).onFalse(m_pneumatics2.retractC());
-    m_operatorController.y().onTrue(m_pneumatics3.extendC()).onFalse(m_pneumatics3.retractC());
+    m_operatorController.x().whileTrue(m_sprayer30S.sprayStopC());
+    m_operatorController.y().whileTrue(m_sprayer60S.sprayStopC());
 
-    m_operatorController.b().and(m_drivebaseS.trg_canBoost).onTrue(m_drivebaseS.ToggleFastC());
-   
-    // m_operatorController.y().onTrue(m_drivebaseS.ResetBoostC());
+    m_operatorController.b().and(m_boostTracker.trg_canBoost).onTrue(m_boostTracker.startBoostC());
 
-    /*
-    //one controllers
-    m_driverController.a().onTrue(m_pneumatics.extendC()).onFalse(m_pneumatics.retractC());
-    m_driverController.x().onTrue(m_pneumatics2.extendC()).onFalse(m_pneumatics2.retractC());
-
-    m_driverController.b().and(m_drivebaseS.trg_canBoost).onTrue(m_drivebaseS.ToggleFastC());
-    m_driverController.y().onTrue(m_drivebaseS.ResetBoostC()); 
-    */
-
-    RobotModeTriggers.disabled().onFalse(m_drivebaseS.ResetBoostC());
+    RobotModeTriggers.disabled().onFalse(m_boostTracker.resetBoostC());
   }
 
   /**
@@ -96,9 +78,4 @@ public class RobotContainer {
     // An example command will be run in autonomous
     return Commands.none();
   }
-
-  public void onEnabled() {
-    
-  }
-
 }

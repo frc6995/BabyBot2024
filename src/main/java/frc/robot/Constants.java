@@ -18,7 +18,9 @@ public final class Constants {
     public static final int kOperatorControllerPort = 1;
   }
 
-  public static class DriveConstants {
-    public static final int CURRENT_LIMIT = 50;
+  public static class SprayerConstants {
+    public static final int CHANNEL_30 = 3;
+    public static final int CHANNEL_45 = 2;
+    public static final int CHANNEL_60 = 4;
   }
 }
