@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+  private final BoostTracker m_boostTracker = new BoostTracker();
   private final DrivebaseS m_drivebaseS = new DrivebaseS();
   private final SprayerS m_sprayer30S = new SprayerS(SprayerConstants.CHANNEL_30);
   private final SprayerS m_sprayer45S = new SprayerS(SprayerConstants.CHANNEL_45);
@@ -58,9 +59,9 @@ public class RobotContainer {
   private void configureBindings() {
     m_drivebaseS.setDefaultCommand(m_drivebaseS.driveC(()->{
       return new ChassisSpeeds(
-        MathUtil.applyDeadband (-m_driverController.getLeftY(), 0.2), 
+        MathUtil.applyDeadband (-m_driverController.getLeftY(), 0.2) * m_boostTracker.getTopSpeed(), 
         0.0, 
-        MathUtil.applyDeadband((m_driverController.getLeftX() * 2), 0.2));
+        MathUtil.applyDeadband((m_driverController.getLeftX()), 0.2) * 2);
     }));
     if ()
 
@@ -69,7 +70,7 @@ public class RobotContainer {
     m_operatorController.x().whileTrue(m_sprayer30S.sprayStopC());
     m_operatorController.y().whileTrue(m_sprayer60S.sprayStopC());
 
-    m_operatorController.b().and(m_drivebaseS.trg_canBoost).onTrue(m_drivebaseS.ToggleFastC());
+    m_operatorController.b().and(m_boostTracker.trg_canBoost).onTrue(m_boostTracker.startBoostC());
    
     // m_operatorController.y().onTrue(m_drivebaseS.ResetBoostC());
 
@@ -82,7 +83,7 @@ public class RobotContainer {
     m_driverController.y().onTrue(m_drivebaseS.ResetBoostC()); 
     */
 
-    RobotModeTriggers.disabled().onFalse(m_drivebaseS.ResetBoostC());
+    RobotModeTriggers.disabled().onFalse(m_boostTracker.resetBoostC());
   }
 
   /**

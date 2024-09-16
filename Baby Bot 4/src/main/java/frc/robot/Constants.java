@@ -20,6 +20,7 @@ public final class Constants {
 
   public static class DriveConstants {
     public static final int CURRENT_LIMIT = 50;
+    public static final double K_V = 2.0; // V/(m/s)
   }
 
   public static class SprayerConstants {
